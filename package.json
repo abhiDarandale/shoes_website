@@ -16,5 +16,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Karan Dhadge",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abhiDarandale/website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/abhiDarandale/website/issues"
+  },
+  "homepage": "https://github.com/abhiDarandale/website#readme"
 }
