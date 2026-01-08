@@ -1,0 +1,388 @@
+<%- include("navbar.ejs") %>
+
+<style>
+  :root {
+    --primary: #6b7280;
+    --accent: #2563eb;
+    --accent-dark: #1e40af;
+    --bg: #f9fafb;
+    --bg-card: #ffffff;
+    --text: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --shadow: rgba(0, 0, 0, 0.05);
+  }
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 2rem 1rem;
+  }
+  .cart-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--primary);
+  }
+  .item-count {
+    text-align: center;
+    margin-top: 0.5rem;
+    color: var(--muted);
+    font-size: 1.1rem;
+  }
+  .cart-layout {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 3rem;
+  }
+  .items-section {
+    flex: 2;
+  }
+  .cart-item {
+    display: flex;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px var(--shadow);
+    transition: transform 0.2s ease;
+  }
+  .cart-item:hover {
+    transform: scale(1.01);
+  }
+  .item-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .item-details {
+    flex: 1;
+  }
+  .item-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .item-variant,
+  .item-discount,
+  .item-meta {
+    font-size: 0.95rem;
+    margin-top: 0.3rem;
+    color: var(--muted);
+  }
+  .item-controls {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .item-price {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary);
+  }
+  .btn-remove {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--accent-dark);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-remove:hover {
+    background-color: var(--border);
+  }
+  .summary-section {
+    flex: 1;
+    position: sticky;
+    top: 1rem;
+  }
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px var(--shadow);
+  }
+  .summary-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: var(--primary);
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin: 0.75rem 0;
+    font-size: 1rem;
+  }
+  .summary-total {
+    font-weight: bold;
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .checkout-btn {
+    background: var(--accent);
+    color: #fff;
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .checkout-btn:hover {
+    background: var(--accent-dark);
+  }
+  .continue-link {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  .continue-link a {
+    color: var(--accent-dark);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .continue-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="container">
+  <header class="cart-header">
+    <h1 class="mt-5 pt-5 text-dark">Your Cart</h1>
+    <p class="item-count text-dark"><%= cart_data.length %> Item(s)</p>
+  </header>
+
+  <div class="cart-layout">
+    <section class="items-section">
+      <% 
+      var sum = 0;
+      for(var i=0; i<cart_data.length; i++) {
+        sum += cart_data[i].product_price * cart_data[i].quantity;
+      %>
+        <div class="cart-item">
+          <img src="/products/<%= cart_data[i].product_image %>" class="item-image" alt="Product">
+          <div class="item-details">
+            <div class="item-title"><%= cart_data[i].product_name %></div>
+            <div class="item-variant">Color: <%= cart_data[i].color %></div>
+            <div class="item-discount text-danger"><%= cart_data[i].product_discount %>% OFF</div>
+            <div class="item-meta">Qty: <%= cart_data[i].quantity %> | Size: <%= cart_data[i].size %></div>
+            <div class="item-meta">Price: <%= cart_data[i].product_price %> /-</div>
+            <div class="item-controls">
+              <div class="item-price">Total: ₹<%= cart_data[i].product_price * cart_data[i].quantity %> /-</div>
+              <a href="/delete_from_cart/<%- cart_data[i].cart_id %>"><button class="btn-remove">Remove</button></a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </section>
+
+    <aside class="summary-section">
+      <div class="summary-card">
+        <div class="summary-title text-dark">Order Summary</div>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>₹<%= sum %> /-</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>₹00 /-</span>
+        </div>
+        <div class="summary-row">
+          <span>Tax</span>
+          <span>₹0 /-</span>
+        </div>
+
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span>₹<%= sum %> /-</span>
+        </div>
+
+        <% if (is_login) { %>
+          <button class="checkout-btn" data-bs-toggle="modal" data-bs-target="#getUserAddress">Proceed to Checkout</button>
+        <% } else { %>
+          <button class="checkout-btn" data-bs-toggle="modal" data-bs-target="#getUserEmailModel">Proceed to Checkout</button>
+        <% } %>
+
+        <div class="continue-link">or <a href="/">Continue Shopping</a></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- Email Modal -->
+<div class="modal fade" id="getUserEmailModel" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="emailFormOtpSend" method="post" onsubmit="sendOtp(event)">
+          <div class="mb-3">
+            <label for="userEmail" class="form-label text-dark">Enter Your Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OTP Modal -->
+<div class="modal fade" id="getUserOtpModel" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="otpVerifyForm" method="post" onsubmit="VerifyOTP(event)">
+          <div class="mb-3">
+            <label class="form-label text-dark">Enter OTP Sent To Your Email</label>
+            <input type="number" class="form-control" id="otp" name="otp" required>
+          </div>
+          <div id="otpError" class="text-danger mb-2" style="display: none;">Wrong OTP. Please try again.</div>
+          <div id="otpSuccess" class="text-success mb-2" style="display: none;">OTP verification successful!</div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Shipping Address Modal -->
+<div class="modal fade" id="getUserAddress" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg"> <!-- Wider modal for better layout -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="emailModalLabel">Fill Shipping Address</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form action="/place_order" method="post">
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="full_name" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Mobile Number</label>
+                <input type="tel" name="mobile" class="form-control" required>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">Pincode</label>
+                <input type="text" name="pincode" id="pincode" class="form-control" required onkeyup="getStateAndCity()">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">City</label>
+                <input type="text" id="city" name="city" class="form-control" readonly required>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Full Address</label>
+                <textarea id="address" name="address" class="form-control" rows="3" required></textarea>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label">State</label>
+                <input type="text" id="state" name="state" class="form-control" readonly required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer justify-content-center">
+          <button type="submit" class="btn btn-success px-4">Place Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function sendOtp(event) {
+    event.preventDefault();
+    var mail = document.getElementById("email").value;
+    $.ajax({
+      url: "/send_otp_mail",
+      type: "post",
+      data: { "email": mail }
+    }).done(function (res) {
+      $("#getUserEmailModel").modal('hide');
+      $("#getUserOtpModel").modal('show');
+    });
+  }
+
+  function VerifyOTP(event) {
+    event.preventDefault();
+    var otp = document.getElementById("otp").value;
+    $.ajax({
+      url: "/verify_otp",
+      type: "post",
+      data: { "otp": otp }
+    }).done(function (res) {
+      if (res.status == 'false') {
+        document.getElementById("otpError").style.display = "block";
+        document.getElementById("otpSuccess").style.display = "none";
+      } else {
+        document.getElementById("otpError").style.display = "none";
+        document.getElementById("otpSuccess").style.display = "block";
+        setTimeout(() => {
+          redirect_to_buy_now();
+        }, 800);
+      }
+    });
+  }
+
+  function redirect_to_buy_now() {
+  var otpModalEl = document.getElementById('getUserOtpModel');
+  var otpModal = bootstrap.Modal.getInstance(otpModalEl);
+  if (!otpModal) {
+    otpModal = new bootstrap.Modal(otpModalEl);
+  }
+  otpModal.hide(); // Close OTP modal
+
+  var addressModalEl = document.getElementById('getUserAddress');
+  var addressModal = new bootstrap.Modal(addressModalEl);
+  addressModal.show(); // Open Shipping Address modal
+  
+}
+
+  function getStateAndCity()
+{
+    var pincode = document.getElementById("pincode").value;
+    $.ajax({
+        url:`https://api.postalpincode.in/pincode/${pincode}`
+    }).done(function(result){
+       
+        if(result[0].Status == 'Success')
+        {
+        document.getElementById('city').value = result[0].PostOffice[0].Block;
+        document.getElementById('state').value = result[0].PostOffice[0].State;;
+        }
+    });
+}
+
+</script>
+
+<%- include("footer.ejs") %>

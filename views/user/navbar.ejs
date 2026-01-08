@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FashionHub - Premium Fashion Destination</title>
+  <link rel="icon" class="logo_circle" type="image/png" href="/logo/logo.png">
+  
+  <!-- External Resources -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- In navbar.ejs -->
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <style>
+    /* ===== Base Styles ===== */
+    :root {
+      --primary-color: #000000;
+      --secondary-color: #111111;
+      --accent-color: #222222;
+      --dark-color: #000000;
+      --light-color: #ffffff;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--light-color);
+      overflow-x: hidden;
+      background-color: var(--primary-color);
+    }
+
+    .logo-container {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 10px;
+    }
+    
+    .logo_circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 2px solid white;
+      padding: 2px;
+    }
+    
+    .section-title {
+      position: relative;
+      margin-bottom: 2.5rem;
+      text-align: center;
+      color: var(--light-color);
+    }
+    
+    .section-title:after {
+      content: '';
+      display: block;
+      width: 80px;
+      height: 4px;
+      background: var(--light-color);
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+    
+    /* ===== Navbar Styles ===== */
+    .navbar {
+      background-color: var(--primary-color);
+      box-shadow: 0 2px 15px rgba(255,255,255,0.1);
+      padding: 0.5rem 0;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid #333;
+    }
+    
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--light-color) !important;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .navbar-nav .nav-link {
+      color: var(--light-color) !important;
+      font-weight: 500;
+      margin: 0 0.5rem;
+      padding: 0.5rem 1rem !important;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .navbar-nav .nav-link:hover {
+      background-color: rgba(255,255,255,0.1);
+      transform: translateY(-2px);
+    }
+    
+    .dropdown-menu {
+      background-color: var(--secondary-color);
+      border: 1px solid #333;
+      box-shadow: 0 10px 30px rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 1rem 0;
+      margin-top: 0.5rem;
+    }
+    
+    .dropdown-item {
+      padding: 0.75rem 1.5rem;
+      transition: all 0.3s ease;
+      color: var(--light-color);
+    }
+    
+    .dropdown-item:hover {
+      background-color: var(--accent-color);
+      color: var(--light-color);
+      transform: translateX(5px);
+    }
+    
+    /* Mobile Toggle */
+    .navbar-toggler {
+      border: none;
+      padding: 0.25rem 0.5rem;
+      color: white;
+    }
+    
+    .navbar-toggler:focus {
+      box-shadow: none;
+    }
+    
+    .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    /* Search Bar */
+    .search-form {
+      position: relative;
+      max-width: 300px;
+    }
+    
+    .search-input {
+      border-radius: 25px;
+      border: 1px solid #333;
+      padding: 0.5rem 1rem 0.5rem 2.5rem;
+      background-color: var(--secondary-color);
+      color: var(--light-color);
+      font-size: 0.9rem;
+    }
+    
+    .search-input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+    
+    .search-input:focus {
+      box-shadow: 0 0 0 0.2rem rgba(255,255,255,0.1);
+      background-color: var(--secondary-color);
+      color: var(--light-color);
+    }
+    
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--light-color);
+    }
+    
+    /* Action Buttons */
+    .action-buttons .btn {
+      border-radius: 25px;
+      padding: 0.5rem 1rem;
+      margin: 0 0.25rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .btn-login {
+      background-color: transparent;
+      border: 1px solid var(--light-color);
+      color: var(--light-color);
+      text-decoration:none;
+    }
+    
+    .btn-login:hover {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-cart, .btn-wishlist {
+      background-color: rgba(255,255,255,0.1);
+      border: 1px solid var(--light-color);
+      color: var(--light-color);
+      position: relative;
+    }
+    
+    .btn-cart:hover, .btn-wishlist:hover {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--light-color);
+      color: var(--primary-color);
+      border-radius: 50%;
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+    }
+    
+    /* ===== Hero Carousel ===== */
+    .hero-carousel {
+      margin-top: 60px;
+    }
+    
+    .carousel-item {
+      height: 500px;
+    }
+    
+    .carousel-img {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      filter: brightness(0.8);
+    }
+    
+    .carousel-caption {
+      background-color: rgba(0,0,0,0.7);
+      border-radius: 10px;
+      padding: 2rem;
+      bottom: 3rem;
+      left: 10%;
+      right: 10%;
+      color: var(--light-color);
+    }
+    
+    /* ===== Product Cards ===== */
+    .product-card {
+      border: 1px solid #333;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+      background-color: var(--secondary-color);
+      color: var(--light-color);
+    }
+    
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+    }
+    
+    .product-img {
+      height: 250px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .product-img {
+      transform: scale(1.05);
+    }
+    
+    .discount-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.75rem;
+      z-index: 1;
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    /* ===== Promo Banner ===== */
+    .promo-banner {
+      background: linear-gradient(135deg, #111 0%, #222 100%);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #333;
+      color: var(--light-color);
+    }
+    
+    .promo-content {
+      padding: 3rem;
+      color: var(--light-color);
+    }
+    
+    /* ===== Category Cards ===== */
+    .category-card {
+      border: 1px solid #333;
+      border-radius: 10px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-align: center;
+      background-color: var(--secondary-color);
+      color: var(--light-color);
+    }
+    
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(255,255,255,0.1);
+    }
+    
+    .category-img {
+      height: 200px;
+      object-fit: cover;
+      filter: brightness(0.8);
+    }
+    
+    /* Discount Products Section */
+    .discount-section h2 {
+      color: var(--light-color);
+    }
+    
+    /* ===== Newsletter ===== */
+    .newsletter-section {
+      background-color: #111;
+      color: var(--light-color);
+    }
+    
+    .newsletter-section .form-control {
+      background-color: #222;
+      border: 1px solid #333;
+      color: var(--light-color);
+    }
+    
+    /* ===== Footer ===== */
+    .main-footer {
+      background-color: var(--primary-color);
+      color: white;
+      padding-top: 3rem;
+      border-top: 1px solid #333;
+    }
+    
+    .footer-links {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .footer-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .social-icons a {
+      color: white;
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      transition: color 0.3s ease;
+    }
+    
+    .social-icons a:hover {
+      color: #ccc;
+    }
+    
+    /* Text Elements */
+    .card-title, .card-text, .lead, .fs-5, .fs-3, h2, h3, h4, h5, h6 {
+      color: var(--light-color) !important;
+    }
+    
+    .text-muted {
+      color: rgba(255,255,255,0.5) !important;
+    }
+    
+    /* Buttons */
+    .btn-light {
+      background-color: var(--light-color);
+      color: var(--primary-color);
+    }
+    
+    .btn-light:hover {
+      background-color: #e0e0e0;
+      color: var(--primary-color);
+    }
+    
+    /* ===== Responsive Styles ===== */
+    @media (max-width: 991.98px) {
+      .navbar-nav {
+        margin-top: 1rem;
+      }
+      
+      .search-form {
+        margin: 1rem 0;
+        max-width: 100%;
+      }
+      
+      .action-buttons {
+        margin-top: 1rem;
+        justify-content: center;
+      }
+      
+      .carousel-item {
+        height: 400px;
+      }
+      
+      .carousel-caption {
+        bottom: 1.5rem;
+      }
+    }
+    
+    @media (max-width: 767.98px) {
+      .carousel-item {
+        height: 300px;
+      }
+      
+      .promo-content {
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+      
+      .promo-img {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <!-- Brand with circled logo -->
+      <a class="navbar-brand" href="/">
+        <div class="logo-container">
+          <img src="/logo/logo.png" alt="FashionHub Logo" class="logo_circle">
+        </div>
+        FashionHub
+      </a>
+
+      <!-- Mobile Toggle -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Content -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <!-- Main Navigation -->
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/product_list?cat=Men">Men</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/product_list?cat=Women">Women</a>
+          </li>
+          <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Kids
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/product_list?cat=Kid_Boys">Boys</a></li>
+            <li><a class="dropdown-item" href="/product_list?cat=Kid_Girls">Girls</a></li>
+          </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Sale</a>
+          </li>
+        </ul>
+
+        <!-- Search Bar -->
+        <form class="search-form d-flex">
+          <div class="position-relative me-2">
+            <i class="fas fa-search search-icon"></i>
+            <input class="form-control search-input" type="search" placeholder="Search products..." aria-label="Search">
+          </div>
+        </form>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons d-flex align-items-center">
+            <a href="/login">
+              <button class="btn btn-login me-2">
+                <i class="fas fa-user me-1"></i>Login
+              </button>
+            </a>
+          <a href="/cart">
+            <button class="btn btn-cart me-2">
+              <i class="fas fa-shopping-cart me-1"></i>Cart
+            </button>
+          </a>
+          <button class="btn btn-wishlist">
+            <i class="fas fa-heart me-1"></i>Wishlist
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>

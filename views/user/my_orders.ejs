@@ -1,0 +1,220 @@
+<%- include("navbar.ejs") %>
+
+<style>
+  :root {
+    --bg: #0f1118;
+    --card-bg: #1f2430;
+    --surface: #1a1f2d;
+    --text: #eceff4;
+    --muted: #8f99ab;
+    --border: #2f364a;
+    --radius: .75rem;
+    --shadow: 0 18px 50px -10px rgba(0, 150, 200, 0.15);
+    --accent: #00d1ca;
+    --button-bg: #00d1ca;
+    --button-hover: #00b8b3;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  h2, h5, h6 {
+    color: var(--text);
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .card-header, .card-footer {
+    background: var(--surface);
+    border: none;
+  }
+
+  .card-header {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .card-footer {
+    border-top: 1px solid var(--border);
+  }
+
+  .small, .text-muted {
+    color: var(--muted) !important;
+  }
+
+  .btn {
+    border-radius: .5rem;
+    padding: .375rem .75rem;
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    font-weight: 600;
+    transition: background .2s, color .2s, transform .1s;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+
+  .btn-outline-dark {
+    background: transparent;
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .btn-outline-dark:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-dark {
+    background: var(--button-bg);
+    color: var(--bg);
+    border: none;
+  }
+
+  .btn-dark:hover {
+    background: var(--button-hover);
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .alert {
+    background: #1e273f;
+    color: var(--text);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+  }
+
+  .text-uppercase {
+    letter-spacing: 1px;
+  }
+
+  .card .fw-bold, .fw-normal {
+    color: var(--text);
+  }
+
+  .border {
+    border-color: var(--border) !important;
+  }
+
+  .status-badge {
+    background: var(--accent);
+    color: #0f1118;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+  }
+
+  @media (max-width: 768px) {
+    .card-body .row > div {
+      margin-bottom: 1rem;
+    }
+  }
+</style>
+
+<div class="container my-5">
+  <h2 class="mb-4 text-center">My Orders</h2>
+
+  <% if (!orders || orders.length === 0) { %>
+    <div class="alert text-center border">
+      You have no orders yet.
+    </div>
+  <% } else { %>
+    <div class="row gy-4">
+      <% for (let i = 0; i < orders.length; i++) { 
+           const order = orders[i];
+           const orderDate = new Date(order.order_date).toLocaleString("en-IN", { 
+             day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" 
+           });
+           const dispatchDate = order.dispatch_date ? new Date(order.dispatch_date).toLocaleDateString("en-IN") : "—";
+           const deliverDate = order.deliver_date ? new Date(order.deliver_date).toLocaleDateString("en-IN") : "—";
+      %>
+        <div class="col-12">
+          <div class="card shadow-sm border">
+            <div class="card-header d-flex justify-content-between align-items-center py-3">
+              <div>
+                <h5 class="mb-1 fw-normal">Order #<%= order.order_id %></h5>
+                <small class="text-muted">Placed on <%= orderDate %></small>
+              </div>
+              <div class="text-end">
+                <span class="status-badge"><%= order.order_status %></span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="row gy-3">
+                <div class="col-md-4">
+                  <h6 class="text-uppercase small text-muted">Customer</h6>
+                  <p class="mb-1"><%= order.fullname %></p>
+                  <p class="mb-1 small"><i class="bi bi-telephone me-1"></i><%= order.mobile %></p>
+                  <p class="mb-0 small text-muted">
+                    <i class="bi bi-geo-alt me-1"></i>
+                    <%= order.area %>, <%= order.city %>, <%= order.state %> - <%= order.pincode %>
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <h6 class="text-uppercase small text-muted">Payment</h6>
+                  <p class="mb-1 small">Method: <%= order.payment_method %></p>
+                  <p class="mb-1 small">Status: 
+                    <% if (order.payment_status === "paid") { %>
+                      <span class="fw-bold">Paid</span>
+                    <% } else { %>
+                      <span class="fw-bold"><%= order.payment_status %></span>
+                    <% } %>
+                  </p>
+                  <p class="mb-0 small">Txn ID: <%= order.transaction_id || "—" %></p>
+                </div>
+                <div class="col-md-4">
+                  <h6 class="text-uppercase small text-muted">Timeline & Total</h6>
+                  <p class="mb-1 small">Dispatched: <%= dispatchDate %></p>
+                  <p class="mb-1 small">Delivered: <%= deliverDate %></p>
+                  <p class="mb-0 fw-bold">₹<%= order.total_amount %></p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer d-flex flex-wrap justify-content-between align-items-center small">
+              <div class="text-muted">
+                Order ID: <%= order.order_id %> · Customer ID: <%= order.customer_id %>
+              </div>
+              <div class="mt-2 mt-sm-0">
+                <a href="/order/<%= order.order_id %>" class="btn btn-sm btn-outline-dark me-2">View Details</a>
+                <% if (order.order_status === 'placed') { %>
+                  <button class="btn btn-sm btn-dark">Cancel Order</button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
+
+<%- include("footer.ejs") %>

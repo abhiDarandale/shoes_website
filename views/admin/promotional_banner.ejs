@@ -1,0 +1,71 @@
+<%- include("navbar.ejs") %>
+
+<div class="container mt-4" style="font-size: 1.1rem;">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 border-bottom pb-2">Add Promotional Banner</h1>
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <form action="/admin/save_promotional_banner" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Promotional Banner Title</label>
+                            <input type="text" class="form-control" name="banner_title" required>
+                            <label class="form-label">Promotional Banner Description</label>
+                            <input type="text" class="form-control" name="banner_description" required>
+                            <label class="form-label">Promotional Banner Button Text</label>
+                            <input type="text" class="form-control" name="banner_button_text" required>
+                            <label class="form-label">Promotional Banner Button Link</label>
+                            <input type="url" class="form-control" name="banner_button_link" required>
+                            <label class="form-label">Promotional Banner Image</label>
+                            <input type="file" class="form-control" name="banner_image" required>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-dark">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Brands Table -->
+            <h2 class="fw-bold t mb-3">Promotional Banner List</h2> <!-- Added heading above table -->
+
+            <div class="table-responsive">
+            <table class="table table-hover table-bordered text-center">
+                <thead class="table-dark">
+                <tr>
+                    <th width="5%">Sr.No</th>
+                    <th width="10%">Banner Title</th>
+                    <th width="35%">Banner Description</th>
+                    <th width="20%">Banner Button Text</th>
+                    <th width="10%">Banner Button Link</th>
+                    <th width="10%">Banner Image</th>
+                    <th width="10%">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for (var i = 0; i < promo_banner.length; i++) { %>
+                    <tr>
+                    <td><%= i + 1 %></td>
+                    <td><%= promo_banner[i].banner_title %></td>
+                    <td><%= promo_banner[i].banner_description %></td>
+                    <td><%= promo_banner[i].banner_button_text %></td>
+                    <td><%= promo_banner[i].banner_button_link %></td>
+                    <td>
+                        <img src="/promotional_banner/<%= promo_banner[i].banner_image %>" width="100px" height="100px" alt="Banner Image">
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                        <a href="/admin/edit_promo_banner/<%= promo_banner[i].banner_id %>" class="btn btn-sm btn-outline-dark">Edit</a>
+                        <a href="/admin/delete_promo_banner/<%= promo_banner[i].banner_id %>" class="btn btn-sm btn-outline-danger">Delete</a>
+                        </div>
+                    </td>
+                    </tr>
+                <% } %>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include("footer.ejs") %>

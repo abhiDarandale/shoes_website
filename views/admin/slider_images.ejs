@@ -1,0 +1,77 @@
+<%- include('navbar.ejs') %>
+
+<div class="container mt-4" style="font-size: 1.1rem;">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 border-bottom pb-2">Add Slider Images</h1>
+
+            <!-- Add Brand Form -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <form action="/admin/save_slider_images" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Slider Title</label>
+                            <input type="text" class="form-control" name="slider_title" required>
+                            <label class="form-label">Slider Description</label>
+                            <input type="text" class="form-control" name="slider_description" required>
+                            <label class="form-label">Slider Button Text</label>
+                            <input type="text" class="form-control" name="slider_button_text" required>
+                            <label class="form-label">Slider Button Link</label>
+                            <input type="url" class="form-control" name="slider_button_link" required>
+                            <label class="form-label">Slider Image</label>
+                            <input type="file" class="form-control" name="slider_image" required>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-dark">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Brands Table -->
+            <h2 class="fw-bold t mb-3">Slider Information</h2> <!-- Added heading above table -->
+
+            <div class="table-responsive">
+                <table class="table table-hover border text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="5%">Sr.No</th>
+                            <th width="10%">Slider Title</th>
+                            <th width="40%">Slider Description</th>
+                            <th width="10%">Button Text</th>
+                            <th width="10%">Button Link</th>
+                            <th width="10%">Slider Image</th>
+                            <th width="10%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < slider.length; i++) { %>
+                            <tr>
+                                <td><%= i + 1 %></td>
+                                <td><%= slider[i].slider_title %></td>
+                                <td><%= slider[i].slider_description %></td>
+                                <td><%= slider[i].slider_button_text %></td>
+                                <td><%= slider[i].slider_button_link %></td>
+                                <td>
+                                    <img src="/slider/<%= slider[i].slider_image %>" width="100px" height="100px" alt="Slider Image">
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="/admin/edit_slider_images/<%= slider[i].slider_id %>" class="btn btn-sm btn-outline-dark">
+                                            Edit
+                                        </a>
+                                        <a href="/admin/delete_slider_images/<%= slider[i].slider_id %>" class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>

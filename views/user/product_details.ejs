@@ -1,0 +1,315 @@
+<%- include("navbar.ejs") %>
+
+<!-- ============================== -->
+<!--           PAGE STYLE          -->
+<!-- ============================== -->
+<style>
+  .useful-info-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 40px;
+  }
+
+  .useful-info-card {
+    flex: 1 1 250px;
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.05);
+  }
+
+  .useful-info-card h6 {
+    font-weight: 600;
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #fff;
+  }
+
+  .useful-info-card p {
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0;
+    color: #ccc;
+  }
+
+  .useful-info-title {
+    color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .useful-info-wrapper {
+      flex-direction: column;
+    }
+  }
+</style>
+
+<div class="container mt-5 pt-4 pb-4">
+  <div class="row g-2">
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div style="height:240px; display: flex; padding: 0; background-color:black; border-radius: 20px">
+          <img src="/products/<%- info[0].product_main_image %>" style="width:100%; border-radius: 20px;" alt="Product Image" class="img-fluid border rounded" />
+        </div>
+        <div class="p-3 mt-2">
+          <div class="row g-2">
+            <div class="col-4">
+              <img src="/products/<%- info[0].product_main_image %>" class="img-fluid border rounded" style="height: 100px; object-fit: cover;" alt="Thumb 1">
+            </div>
+            <div class="col-4">
+              <img src="/products/<%- info[0].product_main_image %>" class="img-fluid border rounded" style="height: 100px; object-fit: cover;" alt="Thumb 2">
+            </div>
+            <div class="col-4">
+              <img src="/products/<%- info[0].product_main_image %>" class="img-fluid border rounded" style="height: 100px; object-fit: cover;" alt="Thumb 3">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card h-100 bg-white text-dark">
+        <div class="card-body p-4">
+          <h2 class="mb-3 text-dark"><%- info[0].product_name %></h2>
+          <div class="mb-2">
+            <span class="fw-bold fs-4">₹ <%- info[0].product_price %></span>
+            <span class="fw-bold text-dark ms-2">
+              <del>₹ <%- info[0].product_market_price%></del>
+            </span>
+            <span class="fw-bold text-danger ms-2">
+              <%- info[0].apply_discount_percent %>% OFF
+            </span>
+          </div>
+          <p class="mt-3"><%- info[0].product_description %></p>
+          <p><strong>Available Color:</strong> <%- info[0].product_color %></p>
+
+          <div class="mb-3 d-flex align-items-center gap-3">
+            <label for="quantity" class="form-label fw-bold mb-0">Quantity:</label>
+            <div class="input-group" style="width: 130px;">
+              <button class="btn border border-dark text-dark btn-outline-secondary py-1" type="button" onclick="changeQty(-1)">−</button>
+              <input type="number" class="form-control text-dark border border-dark text-center py-1" id="quantity" name="quantity" value="1" min="1" />
+              <button class="btn border border-dark text-dark btn-outline-secondary py-1" type="button" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+
+          <div class="mb-3 d-flex align-items-center flex-wrap gap-2">
+            <label for="product_size" class="form-label fw-bold mb-0">Size:</label>
+            <div class="d-flex gap-2">
+              <% if (info[0].product_for == 'Male') { %>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="6">6</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="7">7</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="8">8</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="9">9</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="10">10</div>
+              <% } %>
+              <% if (info[0].product_for == 'Female') { %>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="5">5</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="6">6</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="7">7</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="8">8</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="9">9</div>
+              <% } %>
+              <% if (info[0].product_for == 'Kids') { %>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="4">4</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="5">5</div>
+              <div class="size-option btn border border-dark py-1 px-2" data-size="6">6</div>
+              <% } %>
+            </div>
+            <input type="hidden" name="product_size" id="product_size" required>
+          </div>
+
+          <% if(is_login) { %>
+            <button class="btn btn-dark btn-md mt-2 me-2" onclick="handleBuyNowLogin()">Buy Now</button>
+          <% } else { %>
+            <button class="btn btn-dark btn-md mt-2 me-2" onclick="handleBuyNow()">Buy Now</button>
+          <% } %>
+          <button onclick="handleAddToCartLogin()" class="btn btn-dark btn-md mt-2">Add To Cart</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5">
+  <h4 class="mb-4 fw-bold useful-info-title">Why Shop With Us?</h4>
+  <div class="useful-info-wrapper">
+    <div class="useful-info-card">
+      <h6>Shipping Information</h6>
+      <p>• Free shipping on orders over ₹999<br>• Standard delivery: 3–5 business days<br>• Express delivery at extra cost<br>• Real-time order tracking<br>• Cash on Delivery available</p>
+    </div>
+    <div class="useful-info-card">
+      <h6>Returns & Exchanges</h6>
+      <p>• 15-day easy return policy<br>• Free returns for defective items<br>• No-questions-asked refunds<br>• Exchange within 7 days<br>• Original tags must be intact</p>
+    </div>
+    <div class="useful-info-card">
+      <h6>Product Guarantee</h6>
+      <p>• 1-year manufacturer warranty<br>• 100% authentic product guarantee<br>• Price match within 7 days<br>• Quality checked before dispatch<br>• 24/7 customer support</p>
+    </div>
+    <div class="useful-info-card">
+      <h6>Payment Options</h6>
+      <p>• Credit/Debit Cards (Visa, Mastercard, Amex)<br>• Net Banking<br>• UPI (PhonePe, GPay, etc.)<br>• EMI options available<br>• Secure payment gateway</p>
+    </div>
+    <div class="useful-info-card">
+      <h6>Customer Support</h6>
+      <p>• 24/7 helpline: 1800-123-4567<br>• Email: support@yourstore.com<br>• Live chat support<br>• WhatsApp: +91 9876543210<br>• Avg. response time: under 30 mins</p>
+    </div>
+    <div class="useful-info-card">
+      <h6>Special Offers</h6>
+      <p>• 10% off on first order: NEW10<br>• Refer friends & earn ₹200<br>• Birthday month discounts<br>• Seasonal sale events<br>• Loyalty rewards program</p>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="getUserEmailModel" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="emailForm" action="/send_otp_mail" method="post" onsubmit="sendOtp(event)">
+          <div class="mb-3">
+            <label for="userEmail" class="form-label text-dark">Enter Your Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+          </div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="getUserOtpModel" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <form id="emailForm" action="/verify_otp" method="post" onsubmit="VerifyOTP(event)">
+          <div class="mb-3">
+            <label class="form-label text-dark">Enter OTP Send On Your G-mail</label>
+            <input type="number" class="form-control" id="otp" name="otp" required>
+          </div>
+          <div id="otpError" class="text-danger mb-2" style="display: none;">Wrong OTP. Please try again.</div>
+          <div id="otpSuccess" class="text-success mb-2" style="display: none;">OTP verification successful!</div>
+          <div class="text-end">
+            <button type="submit" class="btn btn-success">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================== -->
+<!--          PAGE SCRIPT          -->
+<!-- ============================== -->
+<script>
+  function changeQty(change) {
+    const input = document.getElementById('quantity');
+    let current = parseInt(input.value);
+    if (isNaN(current)) current = 1;
+    current += change;
+    if (current < 1) current = 1;
+    input.value = current;
+  }
+
+  function sendOtp(event) {
+    event.preventDefault();
+    var mail = document.getElementById("email").value;
+    $.ajax({
+      url: "/send_otp_mail",
+      type: "post",
+      data: { "email": mail }
+    }).done(function (res) {
+      $("#getUserEmailModel").modal('hide');
+      $("#getUserOtpModel").modal('show');
+    });
+  }
+
+  function VerifyOTP(event) {
+    event.preventDefault();
+    var otp = document.getElementById("otp").value;
+    $.ajax({
+      url: "/verify_otp",
+      type: "post",
+      data: { "otp": otp }
+    }).done(function (res) {
+      if (res.status == 'false') {
+        document.getElementById("otpError").style.display = "block";
+        document.getElementById("otpSuccess").style.display = "none";
+      } else {
+        document.getElementById("otpError").style.display = "none";
+        document.getElementById("otpSuccess").style.display = "block";
+        redirect_to_buy_now();
+      }
+    });
+  }
+
+  let sizeSelected = false;
+
+  function changeBg(event) {
+    const allButtons = document.querySelectorAll('.size-option');
+    allButtons.forEach(btn => {
+      btn.style.backgroundColor = '';
+      btn.style.color = '';
+    });
+
+    const clickedBtn = event.target;
+    clickedBtn.style.backgroundColor = '#343a40';
+    clickedBtn.style.color = '#ffffff';
+
+    const selectedSize = clickedBtn.getAttribute('data-size');
+    document.getElementById('product_size').value = selectedSize;
+    sizeSelected = true;
+  }
+
+  document.querySelectorAll('.size-option').forEach(btn => {
+    btn.addEventListener('click', changeBg);
+  });
+
+  function handleBuyNow() {
+    const size = document.getElementById('product_size').value;
+    if (!size) {
+      alert("Please select a size before proceeding.");
+      return;
+    }
+
+    const emailModal = new bootstrap.Modal(document.getElementById('getUserEmailModel'));
+    emailModal.show();
+  }
+
+  function handleBuyNowLogin() {
+  const size = document.getElementById('product_size').value;
+  if (!size) {
+    alert("Please select a size before proceeding.");
+    return;
+  }
+  redirect_to_buy_now();
+}
+
+function handleAddToCartLogin() {
+  const size = document.getElementById('product_size').value;
+  if (!size) {
+    alert("Please select a size before proceeding.");
+    return;
+  }
+  redirect_to_add_to_cart();
+}
+
+function redirect_to_buy_now()
+{
+  var quantity = document.getElementById("quantity").value;
+  var size = document.getElementById("product_size").value;
+  var url = `/buy_now/<%- info[0].product_id %>?quantity=${quantity}&size=${size}`;
+  location.href = url;
+}
+
+function redirect_to_add_to_cart()
+{
+  var quantity = document.getElementById("quantity").value;
+  var size = document.getElementById("product_size").value;
+  var url = `/add_to_cart/<%- info[0].product_id %>?quantity=${quantity}&size=${size}`;
+  location.href = url;
+}
+
+
+</script>
+
+<%- include("footer.ejs") %>

@@ -1,0 +1,65 @@
+<%- include('navbar.ejs') %>
+
+<div class="container mt-4" style="font-size: 1.1rem;">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 border-bottom pb-2">Product Brands</h1>
+
+            <!-- Add Brand Form -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <form action="/admin/save_product_brands" method="post">
+                        <div class="mb-3">
+                            <label for="product_brand_name" class="form-label">Brand Name</label>
+                            <input type="text" class="form-control" id="product_brand_name" name="product_brand_name" required>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-dark">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Brands Table -->
+            <h2 class="fw-bold t mb-3">Product Brand List</h2> <!-- Added heading above table -->
+
+            <div class="table-responsive">
+                <table class="table table-hover border text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="5%">Sr.No</th>
+                            <th width="35%">Brand Name</th>
+                            <th width="20%">Status</th>
+                            <th width="40%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (var i = 0; i < brands.length; i++) { %>
+                            <tr>
+                                <td><%= i + 1 %></td>
+                                <td><%= brands[i].product_brand_name %></td>
+                                <td>
+                                    <span class="badge <%= brands[i].status === 'Active' ? 'bg-success' : 'bg-secondary' %>">
+                                        <%= brands[i].status %>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="/admin/edit_product_brand/<%= brands[i].product_brand_id %>" class="btn btn-sm btn-outline-dark">
+                                            Edit
+                                        </a>
+                                        <a href="/admin/delete_product_brand/<%= brands[i].product_brand_id %>" class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>

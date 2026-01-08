@@ -1,0 +1,169 @@
+
+<%- include("navbar.ejs") %>
+
+  <!-- Hero Carousel -->
+  <div id="featuredCarousel" class="carousel slide hero-carousel" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <% for (var i=0; i<sliders.length; i++) { %>
+        <button type="button" data-bs-target="#featuredCarousel" data-bs-slide-to="<%- i %>" class="<%- (i==0) ? 'active':'' %>" aria-current="<%- (i==0) ? 'true':'' %>" aria-label="Slide <%- i+1 %>"></button>
+      <% } %>
+    </div>
+    <div class="carousel-inner">
+      <% for (var i=0; i<sliders.length; i++) { %>
+        <div class="carousel-item <%- (i==0) ? 'active':'' %>">
+          <img src="slider/<%- sliders[i].slider_image %>" class="d-block w-100 carousel-img" alt="Men's Collection">
+          <div class="carousel-caption">
+            <h5 class="fw-bold fs-3"><%- sliders[i].slider_title %></h5>
+            <p class="fs-5"><%- sliders[i].slider_description %></p>
+            <a target="_blank" href="<%- sliders[i].slider_button_link %>" class="btn btn-light px-4 py-2"><%- sliders[i].slider_button_text %></a>
+          </div>
+        </div>
+      <% } %>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#featuredCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#featuredCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+  <!-- Featured Products -->
+   
+  <section class="container my-5 py-4">
+  <div class="d-flex align-items-center mb-4">
+    <h2 class="fw-bold" style="text-align:left;">Trending Shoes</h2>
+  </div>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <% for (var i=0; i<treanding_products.length; i++) { %>
+    <div class="col">
+      <div class="card product-card h-100 shadow-sm d-flex flex-column">
+        <img src="/products/<%-treanding_products[i].product_main_image %>" class="card-img-top product-img" alt="Nike Air Max">
+        <div class="card-body d-flex flex-column flex-grow-1">
+          <div class="mb-2">
+            <h5 class="card-title text-start mb-2"><%-treanding_products[i].product_name %></h5>
+          </div>
+          <p class="card-text"><%-treanding_products[i].product_description %></p>
+          <div class="d-flex mb-2">
+            <span style="color: #ff4757; font-weight: bold;"><%-treanding_products[i].apply_discount_percent	%>% OFF</span>
+            <s class="ms-2">₹<%-treanding_products[i].product_market_price%></s>
+            <span class="ms-2" style="font-weight: bold;">₹<%-treanding_products[i].product_price%></span>
+          </div>
+          <div class="mt-auto d-flex justify-content-betweenn">
+            <a href="/product_details/<%- treanding_products[i].product_id %>" class="btn btn-light">Buy Now</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- Shop By style -->
+
+  <section class="container my-5 py-4">
+  <h2 class="text-start fw-bold">Shop by Style</h2>
+  <div class="row row-cols-2 mt-2 row-cols-md-4 g-4">
+    <!-- Style 1: Casual -->
+    <% for (var i=0; i<styles.length; i++) { %>
+      <div class="col">
+        <div class="card category-card h-100">
+          <img src="/styles/<%- styles[i].product_style_image %>" class="card-img-top category-img" alt="Style Img">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0"><%- styles[i].product_style_name %></h5>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+
+  <!-- Promo Banner -->
+  <section class="container my-5">
+    <% for (var i=0; i<promo_banner.length; i++ ) {%>
+      <div class="row align-items-center promo-banner shadow-sm p-0">
+        <div class="col-md-6 p-0">
+          <img src="/promotional_banner/<%- promo_banner[i].banner_image %>" alt="Promotional Banner" class="img-fluid w-100 h-100 object-fit-cover">
+        </div>
+        <div class="col-md-6 promo-content">
+          <h3 class="fw-bold mb-3"><%- promo_banner[i].banner_title %></h3>
+          <p class="mb-4 fs-5"><%- promo_banner[i].banner_description %></p>
+          <a href="<%- promo_banner[i].banner_button_link %>" class="btn btn-light btn-lg px-4"><%- promo_banner[i].banner_button_text %></a>
+        </div>
+      </div>
+    <% } %>
+  </section>
+
+  <!-- shop by sport Type -->
+  <section class="container my-5 py-4">
+    <h2 class="text-start fw-bold">Shop by Sport Type</h2>
+    <div class="row row-cols-2 mt-2 row-cols-md-4 g-4">
+    <% for(var i=0; i<types.length; i++) { %>
+      <div class="col">
+        <div class="card category-card h-100">
+          <img src="/types/<%- types[i].product_type_image %>" class="card-img-top category-img" alt="Types Images">
+          <div class="card-body text-center">
+            <h5 class="card-title mb-0"><%- types[i].product_type_name %></h5>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    </div>
+  </section>
+
+  <!-- Discount Products -->
+  <section class="container my-5 py-4 discount-section">
+    <h2 class="text-start fw-bold" style="color: #ff4757;">High Discount Products</h2>
+    <div class="row row-cols-2 mt-2 row-cols-md-3 g-4">
+      <% for (var i=0; i<high_disc_products.length; i++) { %>
+        <div class="col">
+          <div class="card product-card h-100 shadow-sm">
+            <img src="/products/<%- high_disc_products[i].product_main_image %>" class="card-img-top product-img" alt="Product Image">
+            <div class="card-body">
+              <h5 class="card-title"><%- high_disc_products[i].product_name %></h5>
+              <p>
+              <span style="color: #ff4757; font-weight: bold;"><%- high_disc_products[i].apply_discount_percent %>% OFF</span>
+                <span class="fw-bold ms-2">₹<%- high_disc_products[i].product_price %></span>
+                <span class="text-muted text-decoration-line-through ms-2">₹<%- high_disc_products[i].product_market_price %></span>
+              </p>
+              <button class="btn btn-sm btn-light w-100">
+                <a class="text-decoration-none text-dark" href="/product_details/<%- high_disc_products[i].product_id %>">Shop Now</a>
+              </button>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="py-5 my-5 newsletter-section">
+  <style>
+    .form-control::placeholder {
+      color: white;
+      opacity: 1;
+    }
+  </style>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h2 class="fw-bold mb-3">Stay Connected With Us Subscribe !</h2>
+        <p class="lead mb-4">Get the latest updates on new products and upcoming sales</p>
+        <form class="row g-2 justify-content-center">
+          <div class="col-md-8">
+            <input type="email" class="form-control form-control-lg" placeholder="Your email address" 
+              style="color: white; background-color: #333; border: none;">
+          </div>
+          <div class="col-md-2">
+            <button type="submit" class="btn btn-light btn-lg w-100">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include("footer.ejs") %>

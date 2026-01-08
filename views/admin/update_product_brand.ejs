@@ -1,0 +1,38 @@
+<%- include('navbar.ejs') %>
+
+<div class="container mt-4" style="font-size: 1.1rem;">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 border-bottom pb-2">Edit Product Brand</h1>
+
+            <!-- Edit Brand Form -->
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <form action="/admin/update_product_brand" method="post">
+                        <input type="hidden" name="id" value="<%= result[0].product_brand_id %>">
+
+                        <div class="mb-3">
+                            <label class="form-label">Brand Name</label>
+                            <input type="text" class="form-control" name="product_brand_name" value="<%= result[0].product_brand_name %>" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="status" class="form-label">Status</label>
+                            <select class="form-select" id="status" name="status">
+                                <option class="bg-dark text-light" value="Active" <%= result[0].status === 'Active' ? 'selected' : '' %>>Active</option>
+                                <option class="bg-dark text-light" value="Inactive" <%= result[0].status === 'Inactive' ? 'selected' : '' %>>Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-dark">Update Brand</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>

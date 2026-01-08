@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FashionHub : Offical Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --topbar-height: 60px;
+        }
+        
+        body {
+            overflow-x: hidden;
+            background-color: #f8f9fa;
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            grid-template-rows: var(--topbar-height) 1fr;
+            grid-template-areas: 
+                "sidebar topbar"
+                "sidebar main";
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        /* Sidebar styling */
+        .sidebar {
+             grid-area: sidebar;
+            background-color: black;
+            color: white;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-y:scroll;
+        }
+        
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 5px;
+            border-radius: 5px;
+            padding: 10px 15px;
+        }
+        
+        .sidebar .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .sidebar .nav-link i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .sidebar-header {
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            position: sticky;
+            top: 0;
+            background-color: black; /* Match sidebar color */
+        }
+
+        .sidebar-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-top: 20px; /* Space for sticky header */
+            padding-bottom: 20px;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+        
+        /* Topbar styling */
+        .topbar {
+            grid-area: topbar;
+            background-color: white;
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            padding: 0 20px;
+        }
+        
+        /* Main content area */
+        .main-content {
+            grid-area: main;
+            padding: 20px;
+        }
+        
+        /* Card styling */
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            font-weight: 600;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                grid-template-columns: 1fr;
+                grid-template-areas: 
+                    "topbar"
+                    "main";
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .sidebar.active {
+                display: block;
+                position: fixed;
+                width: var(--sidebar-width);
+                height: 100vh;
+                left: 0;
+                top: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+           FashionHub
+        </div>
+        <div class="px-3 pt-3">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/admin">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/users">
+                        <i class="bi bi-people"></i> Users
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/add_product">
+                        <i class="bi bi-plus-square"></i> Add Products
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/product_list">
+                        <i class="bi bi-table"></i> Product List
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/pending_orders">
+                        <i class="bi bi-hourglass"></i> Pending Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/dispatch_orders">
+                        <i class="bi bi-truck"></i> Dispatch Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/delivered_orders">
+                        <i class="bi bi-check-circle"></i> Delivered Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/canceled_orders">
+                        <i class="bi bi-x-circle"></i> Canceled Orders
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/return_orders">
+                        <i class="bi bi-arrow-return-left"></i> Return Orders
+                    </a>
+                </li> 
+            </ul>
+            <hr class="text-secondary">
+            <ul class="list-unstyled">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/promotional_banners">
+                        <i class="bi bi-image"></i> Promo Banners
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/slider_images">
+                        <i class="bi bi-image"></i> Slider Images
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/product_brands">
+                        <i class="bi bi-tag"></i> Product Brands
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/product_styles">
+                        <i class="bi bi-palette"></i> Product Styles
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/product_types">
+                        <i class="bi bi-box-seam"></i> Product Types
+                    </a>
+                </li>
+                <hr class="text-secondary">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/settings">
+                        <i class="bi bi-gear"></i> Settings
+                    </a>
+                </li>  
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/logout">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a>
+                </li>  
+            </ul>
+        </div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <nav class="topbar navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#topbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="topbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle fs-5 text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle"></i> Admin
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Profile</a></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#"><i class="bi bi-box-arrow-right me-2"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">

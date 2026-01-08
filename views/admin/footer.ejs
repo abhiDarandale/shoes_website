@@ -1,0 +1,32 @@
+ </div>
+
+    <!-- Bootstrap 5 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+        .create(document.querySelector('#editor'))
+        .catch(error => {
+            console.error(error);
+        });
+    </script>
+    <script>
+        // Toggle sidebar on mobile
+        document.querySelector('.navbar-toggler').addEventListener('click', function() {
+            document.getElementById('sidebar').classList.toggle('active');
+        });
+        
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const isClickInsideSidebar = sidebar.contains(event.target);
+            const isClickOnToggler = event.target.classList.contains('navbar-toggler') || 
+                                    event.target.closest('.navbar-toggler');
+            
+            if (window.innerWidth <= 768 && !isClickInsideSidebar && !isClickOnToggler && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

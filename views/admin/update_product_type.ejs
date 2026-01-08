@@ -1,0 +1,35 @@
+<%- include('navbar.ejs') %>
+
+<div class="container mt-4" style="font-size: 1.1rem;">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4 border-bottom pb-2">Update Product Types</h1>
+            <div class="card mb-4 border-0 shadow-sm">
+                <div class="card-body">
+                    <form action="/admin/update_product_type" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <input type="hidden" name="id" value="<%= type[0].product_type_id %>">
+                            <label class="form-label">Update Product Type Name</label>
+                            <input type="text" class="form-control" value="<%= type[0].product_type_name %>" name="product_type_name" required>
+                            <div class="mb-3">
+                                <label for="status" class="form-label">Status</label>
+                                <select class="form-select" id="status" name="status">
+                                    <option class="bg-dark text-light" value="Active" <%= type[0].status === 'Active' ? 'selected' : '' %>>Active</option>
+                                    <option class="bg-dark text-light" value="Inactive" <%= type[0].status === 'Inactive' ? 'selected' : '' %>>Inactive</option>
+                                </select>
+                            </div>
+                            <label class="form-label">Update Product Type Image</label>
+                            <input type="file" class="form-control mb-2" name="product_type_image">
+                            <img src="/types/<%= type[0].product_type_image %>" width="100px" height="100px" alt="type Image">
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" class="btn btn-dark">Update Type</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%- include('footer.ejs') %>

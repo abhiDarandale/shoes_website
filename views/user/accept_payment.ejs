@@ -1,0 +1,27 @@
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+var options = {
+    "key" : "rzp_test_GmXyAFAK01Uo7t",
+    "amount" : "<%- order_info[0].total_amount * 100 %>",
+    "currency" : "INR",
+    "name" : "FashionHub Shoes Store",
+    "description" : "Oredr Payment",
+    "image" : "https://sdmntprwestus3.oaiusercontent.com/files/6226d4253b81790_00000000-cca8-61fd-97b2-887d06a24ec5/drvs/thumbnail/raw?se=2025-07-18T22%3A25%3A58Z&sp=r&sv=2024-08-04&sr=b&scid=3249f273-d120-533c-9621-d66599a75e6b&skoid=0da8417a-a4c3-4a19-9b05-b82cee9d8868&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-07-18T21%3A18%3A58Z&ske=2025-07-19T21%3A18%3A58Z&sks=b&skv=2024-08-04&sig=FniI0IGboowl64o2ph/CBjJVewy4vecgKmWEGZiUh28%3D",
+    "callback_url" : "http://localhost:1000/payment_success/<%- order_info[0].order_id %>",
+    "prefill" : {
+        "name" :"<%- order_info[0].fullname %>",
+        // "email" :"<%- order_info[0].email %>",
+        "contact" :"<%- order_info[0].mobile %>",
+
+    },
+    "notes":{
+        "address" : "<%- order_info[0].area %>"
+    },
+    "theme": {
+        "color" : "#3399cc"
+    }
+};
+var rzpl = new Razorpay(options);
+rzpl.open();
+</script>

@@ -1,0 +1,311 @@
+<%- include("navbar.ejs") %>
+
+<style>
+/* CHECKOUT SECTION STYLES - ISOLATED */
+.checkout-section {
+    background-color: #000;
+    padding: 30px 0;
+    color: #fff;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+}
+
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.checkout-card {
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.checkout-white-card {
+    background-color: #fff;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    color: #333;
+}
+
+.checkout-dark-card {
+    background-color: #111;
+    border: 1px solid #333;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.checkout-card-header {
+    padding: 18px 25px;
+    border-bottom: 1px solid #eee;
+    background-color: #f8f9fa;
+}
+
+.checkout-dark-card .checkout-card-header {
+    background-color: #222;
+    border-bottom-color: #333;
+    color: #fff;
+}
+
+.checkout-card-body {
+    padding: 25px;
+}
+
+.checkout-form-group {
+    margin-bottom: 20px;
+}
+
+.checkout-form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: inherit;
+}
+
+.checkout-form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f8f9fa;
+    transition: all 0.3s;
+}
+
+.checkout-form-control.small-input {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+}
+
+.checkout-dark-card .checkout-form-control {
+    background-color: #222;
+    border-color: #444;
+    color: #fff;
+}
+
+.checkout-form-control:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.1);
+    border-color: #80bdff;
+}
+
+.checkout-product {
+    display: flex;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.checkout-dark-card .checkout-product {
+    border-bottom-color: #333;
+}
+
+.checkout-product-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 15px;
+    border: 1px solid #ddd;
+}
+
+.checkout-dark-card .checkout-product-img {
+    border-color: #444;
+}
+
+.checkout-product-details {
+    flex: 1;
+}
+
+.checkout-product-title {
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.checkout-product-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.checkout-dark-card .checkout-product-meta {
+    color: #aaa;
+}
+
+.checkout-product-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkout-summary-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.checkout-dark-card .checkout-summary-item {
+    border-bottom-color: #333;
+}
+
+.checkout-total {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #eee;
+}
+
+.checkout-dark-card .checkout-total {
+    border-top-color: #333;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.checkout-dark-card .checkout-btn {
+    background: #fff;
+    color: #000;
+}
+
+.checkout-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+</style>
+
+<!-- CHECKOUT SECTION CONTENT -->
+<section class="checkout-section" >
+  <div class="checkout-container  mt-5">
+    <form action="/checkout" method="post">
+    <h4 class="p-3">Complete Your Order</h4>
+    <div class="row">
+      <!-- Shipping Info -->
+      <div class="col-md-7">
+        <div class="checkout-card checkout-white-card text-dark">
+          <div class="checkout-card-header "  style="background-color:gray;">
+            <h5 class="text-dark">Shipping Information</h5>
+          </div>
+          <div class="checkout-card-body">
+              <div class="row">
+                <div class="col-md-6 checkout-form-group">
+                  <label class="checkout-form-label">Full Name</label>
+                  <input type="text" name="full_name" class="checkout-form-control small-input" required>
+                </div>
+                <div class="col-md-6 checkout-form-group">
+                  <label class="checkout-form-label">Mobile Number</label>
+                  <input type="tel" name="mobile" class="checkout-form-control small-input" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 checkout-form-group">
+                  <label class="checkout-form-label">Pincode</label>
+                  <input type="text" name="pincode" id="pincode" class="checkout-form-control small-input" required onkeyup="getStateAndCity()">
+                </div>
+                <div class="col-md-6 checkout-form-group">
+                  <label class="checkout-form-label">City</label>
+                  <input type="text" id="city" name="city" class="checkout-form-control small-input" readonly required>
+                </div>
+              </div>
+              <div class="checkout-form-group">
+                <label class="checkout-form-label">Full Address</label>
+                <textarea id="address" name="address" class="checkout-form-control small-input" rows="2" required></textarea>
+              </div>
+               <div class="checkout-form-group">
+                <label class="checkout-form-label">State</label>
+                <input type="text" id="state" name="state" class="checkout-form-control small-input" readonly required></input>
+                <input type="hidden" name="product_id" value="<%- info[0].product_id %>" >
+                <input type="hidden" name="product_quantity" value="<%- url_data.quantity %>" >
+                <input type="hidden" name="product_size" value="<%- url_data.size %>" >
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="col-lg-5">
+        <div class="checkout-card checkout-white-card">
+          <div class="checkout-card-header"  style="background-color:gray;">
+            <h5 class="text-dark">Your Order</h5>
+          </div>
+          <div class="checkout-card-body">
+            <!-- Product Example -->
+            <div class="checkout-product">
+              <img src="/products/<%- info[0].product_main_image %>" alt="Product" class="checkout-product-img">
+              <div class="checkout-product-details">
+                <h6 class="checkout-product-title text-dark"><%- info[0].product_name %></h6>
+                <div class="checkout-product-meta">
+                  <span>Color : <%- info[0].product_color %></span>
+                  <span>Size: <%- url_data.size %></span>
+                </div>
+                <div class="checkout-product-price">
+                  <div>
+                    <span>&#8377;<%- info[0].product_price %></span>
+                    <span style="margin: 0 5px;">×</span>
+                    <span ><%- url_data.quantity %></span>
+                  </div>
+                  <span>&#8377;<%- info[0].product_price * url_data.quantity %> /-</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Summary -->
+            <div class="checkout-summary-item">
+              <span>Subtotal</span>
+              <span>&#8377;<%- info[0].product_price * url_data.quantity %> /-</span>
+            </div>
+            <div class="checkout-summary-item">
+              <span>Shipping</span>
+              <span>FREE</span>
+            </div>
+            <div class="checkout-summary-item">
+              <span>Tax</span>
+              <span>&#8377 0 /-</span>
+            </div>
+            <div class="checkout-total">
+              <span>Total</span>
+              <span>&#8377;<%- info[0].product_price * url_data.quantity %> /-</span>
+            </div>
+
+            <button class="checkout-btn">Place Order</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+
+<script>
+
+function getStateAndCity()
+{
+    var pincode = document.getElementById("pincode").value;
+    $.ajax({
+        url:`https://api.postalpincode.in/pincode/${pincode}`
+    }).done(function(result){
+       
+        if(result[0].Status == 'Success')
+        {
+        document.getElementById('city').value = result[0].PostOffice[0].Block;
+        document.getElementById('state').value = result[0].PostOffice[0].State;;
+        }
+    });
+}
+
+</script>
+
+<%- include("footer.ejs") %>

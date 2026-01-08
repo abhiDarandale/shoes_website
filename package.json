@@ -1,0 +1,20 @@
+{
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-fileupload": "^1.5.2",
+    "express-session": "^1.18.1",
+    "mysql": "^2.18.1",
+    "nodemailer": "^7.0.5"
+  },
+  "name": "shoes_ecom",
+  "version": "1.0.0",
+  "description": "Shoes Ecommerce",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Karan Dhadge",
+  "license": "ISC"
+}

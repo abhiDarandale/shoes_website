@@ -1,0 +1,38 @@
+<%- include("navbar.ejs") %>
+
+<div class="container mt-4" style="font-size: 1.1rem;">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="mb-4 border-bottom pb-2">Update Promotional Banner</h1>
+
+      <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-body">
+          <form action="/admin/update_promotional_banner" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+              <input type="hidden" name="id" value="<%= banner[0].banner_id %>">
+              <label class="form-label">Promotional Banner Title</label>
+              <input type="text" class="form-control" name="banner_title" value="<%= banner[0].banner_title %>" required>
+              <label class="form-label">Promotional Banner Description</label>
+              <input type="text" class="form-control" name="banner_description" value="<%= banner[0].banner_description %>" required>
+              <label class="form-label">Promotional Banner Button Text</label>
+              <input type="text" class="form-control" name="banner_button_text" value="<%= banner[0].banner_button_text %>" required>
+              <label class="form-label">Promotional Banner Button Link</label>
+              <input type="url" class="form-control" name="banner_button_link" value="<%= banner[0].banner_button_link %>" required>
+              <label class="form-label">Change Banner Image</label>
+              <input type="file" class="form-control" name="banner_image">
+              <label class="form-label">Current Banner Image</label><br>
+              <img src="/promotional_banner/<%= banner[0].banner_image %>" width="150px" height="100px" alt="Banner Image" class="mb-3">
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-dark">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<%- include("footer.ejs") %>
